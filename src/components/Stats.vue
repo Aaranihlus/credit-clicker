@@ -2,6 +2,7 @@
   <div class="text-center">
     <h4>{{ player.current_credits }} Credits</h4>
     <p v-show="player.cps > 0">Per Second: {{ player.cps }}</p>
+    <p>Taxable Amount: {{ Math.round(player.earned_since_last_tax / 100 * 20) }}</p>
   </div>
 </template>
 
@@ -21,18 +22,14 @@ export default {
     }
   },
 
-  methods: {
-    /*formatSecondsPlayed (seconds) {
-      this.player.time_played = moment.duration(seconds, 'seconds').format('hh:mm:ss')
-    }*/
-  },
-
   created () {
     // Every second send an update event, with the players current total credits
     this.UpdateLoop = setInterval(() => {
       Event.$emit('Update', this.player.total_credits)
       this.player.time_played += 1
-      //this.formatSecondsPlayed(this.player.time_played)
+      this.player.current_credits += this.player.cps
+      this.player.total_credits += this.player.cps
+      this.player.earned_since_last_tax += this.player.cps
     }, 1000)
 
     Event.$on('StatsMenuOpen', () => {
@@ -51,9 +48,6 @@ export default {
     // If we recieve an update cps event, set the players cps to the new value and add this to the total and current credit counts
     Event.$on('UpdateCPS', (newCPS) => {
       this.player.cps = newCPS
-      this.player.current_credits += newCPS
-      this.player.total_credits += newCPS
-      this.player.earned_since_last_tax += newCPS
     })
 
     // When the player clicks the credit icon, add the current cpc to current and total credits
@@ -82,6 +76,7 @@ export default {
         this.player.current_credits -= building.price
         building.price = Math.round(building.price * 1.1)
         Event.$emit('Update')
+        Event.$emit('BuildingSuccess', building)
       } else {
         this.$snotify.info('Not enough credits')
       }

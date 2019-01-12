@@ -1,6 +1,9 @@
 <template>
-  <div v-show="resourceGeneration.length > 0">
-    <h4>Resource Panel</h4>
+  <div class="text-center" v-show="resourceGeneration.length > 0">
+    <h4>Resources</h4>
+    <ul>
+      <li v-for="resource in resourceGeneration">{{ resource.name }} (time: {{ resource.time_to_produce }})</li>
+    </ul>
   </div>
 </template>
 
@@ -14,11 +17,14 @@ export default {
   },
 
   created () {
-    Event.$on('BuildingData', (buildingData) => {
-      console.log('Resources component recieved building data')
+    Event.$on('BuildingSuccess', (buildingData) => {
+      Object.keys(buildingData.resources).forEach(key => {
+        if (!(key in this.resourceGeneration)) {
+          this.resourceGeneration.push(buildingData.resources[key])
+        }
+      })
     })
   }
-
 }
 </script>
 

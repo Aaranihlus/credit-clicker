@@ -1,12 +1,7 @@
 <template>
   <div>
-    <Building v-for="(building, index) in buildings"
-    v-if="building.unlocked"
-    v-bind:building="building"
-    v-bind:index="index"
-    v-bind:key="building.id">
-  </Building>
-</div>
+    <Building v-for="(building, index) in buildings" v-if="building.unlocked" v-bind:building="building" v-bind:index="index" v-bind:key="building.id"></Building>
+  </div>
 </template>
 
 <script>
@@ -25,7 +20,12 @@ export default {
         name: 'Gx-8 Moisture vaporator',
         image: 'vaporators.jpg',
         description: 'Water Vaporators extract water from the planets atmosphere',
-        resources: ['Water Container'],
+        resources: {
+          0: {
+            name: 'Water Container',
+            time_to_produce: 120
+          }
+        },
         price: 15,
         unlocked_at: 25,
         unlocked: false,

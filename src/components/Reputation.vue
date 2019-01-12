@@ -15,7 +15,7 @@ export default {
     return {
       currentFactionID: 1,
       expandedFactionInfo: false,
-
+      nextTaxIn: 240,
       factions: {
         1: {
           name: 'Neutral',
@@ -53,24 +53,30 @@ export default {
   },
 
   created () {
-    // Every 5 seconds get tax
+    this.taxCountdown = setInterval(() => {
+      this.nextTaxIn -= 1
+      if (this.nextTaxIn === 0) {
+        this.nextTaxIn = 240
+      }
+    }, 1000)
+
     this.taxLoop = setInterval(() => {
       if (this.currentFactionID === 1) {
         Event.$emit('ImperialTax')
       }
-      if (this.player_faction === 'Rebel Alliance') {
+      if (this.currentFactionID === 2) {
         Event.$emit('ImperialAttack')
         this.$snotify.warning('The Imperials are launching an attack on you.', 'Attack')
       }
-      if (this.player_faction === 'Galactic Empire') {
+      if (this.currentFactionID === 3) {
         Event.$emit('RebelAttack')
         this.$snotify.warning('The Rebels are launching an attack on you.', 'Attack')
       }
-      if (this.player_faction === 'Underworld') {
+      if (this.currentFactionID === 4) {
         Event.$emit('UnderworldEvent')
         console.log('RandomUnderworldEvent')
       }
-    }, 120000)
+    }, 240000)
   }
 }
 </script>

@@ -6,9 +6,6 @@ import Vue from 'vue'
 import App from './App.vue'
 import Snotify from 'vue-snotify'
 
-//import Moment from 'moment'
-//Vue.use(Moment)
-
 Vue.use(Snotify, {
   toast: {
     timeout: 3500,

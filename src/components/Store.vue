@@ -15,9 +15,9 @@
     </div>
 
   </div>
-  <BuildingList v-show="buildingMenuActive"></BuildingList>
-  <UpgradeList v-show="upgradeMenuActive"></UpgradeList>
-  <UnitList v-show="unitMenuActive"></UnitList>
+  <BuildingList v-show="activeMenu === 'Building'"></BuildingList>
+  <UpgradeList v-show="activeMenu === 'Upgrade'"></UpgradeList>
+  <UnitList v-show="activeMenu === 'Unit'"></UnitList>
 </div>
 </template>
 
@@ -30,31 +30,13 @@ export default {
 
   data () {
     return {
-      buildingMenuActive: true,
-      upgradeMenuActive: false,
-      unitMenuActive: false
+      activeMenu: 'Building'
     }
   },
 
   methods: {
     ChangeMenu (menu) {
-      if (menu === 'Building') {
-        this.buildingMenuActive = true
-        this.upgradeMenuActive = false
-        this.unitMenuActive = false
-      }
-
-      if (menu === 'Upgrade') {
-        this.upgradeMenuActive = true
-        this.buildingMenuActive = false
-        this.unitMenuActive = false
-      }
-
-      if (menu === 'Unit') {
-        this.unitMenuActive = true
-        this.upgradeMenuActive = false
-        this.buildingMenuActive = false
-      }
+      this.activeMenu = menu
     }
   },
 
